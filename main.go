@@ -14,6 +14,13 @@ func main() {
 	app.Usage = "command line client for fastbin"
 	app.Version = "1.0.0"
 	app.Action = commands.CreateSnippet
+	app.Commands = []cli.Command{
+		{
+			Name:   "init",
+			Usage:  "initialize your fastbin CLI environment",
+			Action: commands.InitConfig,
+		},
+	}
 
 	err := app.Run(os.Args)
 	if err != nil {
