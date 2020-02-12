@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
+	"github.com/jozsefsallai/fastbin-cli/commands"
 	"github.com/urfave/cli"
 )
 
@@ -13,10 +13,7 @@ func main() {
 	app.Name = "fastbin"
 	app.Usage = "command line client for fastbin"
 	app.Version = "1.0.0"
-	app.Action = func(c *cli.Context) error {
-		fmt.Println("This app is a work in progress.")
-		return nil
-	}
+	app.Action = commands.CreateSnippet
 
 	err := app.Run(os.Args)
 	if err != nil {
