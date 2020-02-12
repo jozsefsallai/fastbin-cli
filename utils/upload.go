@@ -2,17 +2,23 @@ package utils
 
 import (
 	"bytes"
-	"fmt"
+	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/jozsefsallai/fastbin-cli/config"
 )
 
+type RequestResponse struct {
+	Ok bool `json:"ok"`
+	Error string `json:"error"`
+	Key string `json:"key"`
+}
+
 // Upload will upload a file to the remote server.
 func Upload(input string) (string, error) {
 	conf := config.GetConfig()
-	fmt.Println(input)
 
 	url := conf.Server + "/documents"
 	payload := bytes.NewBuffer([]byte(input))
@@ -34,5 +40,16 @@ func Upload(input string) (string, error) {
 		return "", err
 	}
 
-	return string(body), nil
+	var jsonResponse RequestResponse
+	json.Unmarshal(body, &jsonResponse)
+
+	if jsonResponse.Ok == false {
+		if len(jsonResponse.Error) > 0 {
+			return "", errors.New(jsonResponse.Error)
+		}
+
+		return "", errors.New("Failed to upload the snippet.")
+	}
+
+	return string(jsonResponse.Key), nil
 }

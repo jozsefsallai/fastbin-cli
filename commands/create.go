@@ -7,9 +7,21 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/jozsefsallai/fastbin-cli/config"
 	"github.com/jozsefsallai/fastbin-cli/utils"
 	"github.com/urfave/cli"
 )
+
+func printUrls(key string) {
+	conf := config.GetConfig()
+
+	documentURL := conf.Server + "/" + key
+	rawURL := conf.Server + "/raw/" + key
+
+	fmt.Println("Snippet uploaded successfully!")
+	fmt.Println("URL:", documentURL)
+	fmt.Println("Raw:", rawURL)
+}
 
 // CreateSnippet is the function that creates a snippet on the
 // remote server either from a file or from another command's
@@ -42,7 +54,7 @@ func CreateSnippet(ctx *cli.Context) error {
 			panic(err)
 		}
 
-		fmt.Println(string(result))
+		printUrls(result)
 
 		return nil
 	}
@@ -58,9 +70,12 @@ func CreateSnippet(ctx *cli.Context) error {
 		output = append(output, input)
 	}
 
-	for j := 0; j < len(output); j++ {
-		fmt.Printf("%c", output[j])
+	result, err := utils.Upload(string(output))
+	if err != nil {
+		panic(err)
 	}
+
+	printUrls(result)
 
 	return nil
 }
