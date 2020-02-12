@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/atotto/clipboard"
 	"github.com/jozsefsallai/fastbin-cli/config"
 	"github.com/jozsefsallai/fastbin-cli/utils"
 	"github.com/urfave/cli"
@@ -17,6 +18,8 @@ func printUrls(key string) {
 
 	documentURL := conf.Server + "/" + key
 	rawURL := conf.Server + "/raw/" + key
+
+	clipboard.WriteAll(documentURL)
 
 	fmt.Println("Snippet uploaded successfully!")
 	fmt.Println("URL:", documentURL)
