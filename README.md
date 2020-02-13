@@ -2,6 +2,8 @@
 
 Command line client for [fastbin](https://github.com/jozsefsallai/fastbin).
 
+[![asciicast](https://asciinema.org/a/301276.svg)](https://asciinema.org/a/301276)
+
 ## Usage
 
 You can either upload the contents of a file or the output of another command. In both cases, the app will return the URL and the raw URL of the uploaded snippet and will copy the URL to the clipboard.
