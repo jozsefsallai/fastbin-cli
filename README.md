@@ -20,6 +20,18 @@ fastbin-cli file.txt
 ls -ag | fastbin-cli
 ```
 
+**To upload a file and only print and copy the full URL:**
+
+```
+fastbin-cli --full file.txt
+```
+
+**To upload a file and only print and copy the raw URL:**
+
+```
+fastbin-cli --raw file.txt
+```
+
 ## Installation
 
 ### Linux, Mac OS, FreeBSD, Windows
@@ -42,7 +54,7 @@ You can use the built-in `init` command to initialize your environment settings.
 fastbin-cli init
 ```
 
-It will prompt you for the URL of the fastbin server you want to use. The settings will be stored in `~/.fastbinrc.json`. You can also create this file yourself, based on the [example](https://github.com/jozsefsallai/fastbin-cli/blob/master/.fastbinrc.example.json).
+It will prompt you for the URL of the fastbin server you want to use and the private access key of the fastbin server (if it's not a public server). The settings will be stored in `~/.fastbinrc.json`. You can also create this file yourself, based on the [example](https://github.com/jozsefsallai/fastbin-cli/blob/master/.fastbinrc.example.json).
 
 ## Contribution
 

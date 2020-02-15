@@ -14,6 +14,16 @@ func main() {
 	app.Usage = "command line client for fastbin"
 	app.Version = "1.0.0"
 	app.Action = commands.CreateSnippet
+	app.Flags = []cli.Flag{
+		cli.BoolFlag{
+			Name:  "full, f",
+			Usage: "only print out and copy the full URL",
+		},
+		cli.BoolFlag{
+			Name:  "raw, r",
+			Usage: "only print out and copy the raw URL",
+		},
+	}
 	app.Commands = []cli.Command{
 		{
 			Name:   "init",
