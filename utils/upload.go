@@ -4,16 +4,19 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/jozsefsallai/fastbin-cli/config"
 )
 
+// RequestResponse is the structure of a potential JSON response
+// coming from the server
 type RequestResponse struct {
-	Ok bool `json:"ok"`
+	Ok    bool   `json:"ok"`
 	Error string `json:"error"`
-	Key string `json:"key"`
+	Key   string `json:"key"`
 }
 
 // Upload will upload a file to the remote server.
@@ -24,6 +27,11 @@ func Upload(input string) (string, error) {
 	payload := bytes.NewBuffer([]byte(input))
 	req, err := http.NewRequest("POST", url, payload)
 	req.Header.Set("Content-Type", "text/plain")
+
+	if len(conf.Key) > 0 {
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", conf.Key))
+	}
+
 	if err != nil {
 		return "", err
 	}
@@ -36,9 +44,6 @@ func Upload(input string) (string, error) {
 	defer res.Body.Close()
 
 	body, _ := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return "", err
-	}
 
 	var jsonResponse RequestResponse
 	json.Unmarshal(body, &jsonResponse)
@@ -48,7 +53,7 @@ func Upload(input string) (string, error) {
 			return "", errors.New(jsonResponse.Error)
 		}
 
-		return "", errors.New("Failed to upload the snippet.")
+		return "", errors.New("failed to upload the snippet")
 	}
 
 	return string(jsonResponse.Key), nil

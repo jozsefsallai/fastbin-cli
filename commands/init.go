@@ -20,9 +20,12 @@ func InitConfig(ctx *cli.Context) error {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter the URL of the fastbin server you want to use: ")
 	server, _ := reader.ReadString('\n')
+	fmt.Print("Enter the key of your fastin server (leave empty for public servers): ")
+	key, _ := reader.ReadString('\n')
 
 	var conf config.Config
 	conf.Server = strings.TrimSpace(server)
+	conf.Key = strings.TrimSpace(key)
 
 	json, _ := json.MarshalIndent(conf, "", "  ")
 	home, _ := homedir.Dir()

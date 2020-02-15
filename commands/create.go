@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
 
 	"github.com/atotto/clipboard"
@@ -54,7 +55,7 @@ func CreateSnippet(ctx *cli.Context) error {
 
 		result, err := utils.Upload(string(data))
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 
 		printUrls(result)
@@ -75,7 +76,7 @@ func CreateSnippet(ctx *cli.Context) error {
 
 	result, err := utils.Upload(string(output))
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	printUrls(result)

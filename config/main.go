@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path"
 
@@ -13,6 +14,7 @@ import (
 // Config is a structure defining the schema of the configuration (JSON)
 type Config struct {
 	Server string `json:"server"`
+	Key    string `json:"key"`
 }
 
 // GetConfig returns the configuration object from the user's home directory
@@ -28,18 +30,18 @@ func GetConfig() Config {
 	rc, err := os.Open(rcPath)
 
 	if err != nil {
-		panic("Failed to open ~/.fastbinrc.json")
+		log.Fatal("Failed to open ~/.fastbinrc.json")
 	}
 
 	defer rc.Close()
 
-	contents, _ := ioutil.ReadAll(rc)
+	contents, err := ioutil.ReadAll(rc)
 
 	var config Config
-	json.Unmarshal(contents, &config)
+	err = json.Unmarshal(contents, &config)
 
 	if err != nil {
-		panic("Failed to read configuration file. It is probably broken or invalid.")
+		log.Fatal("Failed to read configuration file. It is probably broken or invalid.")
 	}
 
 	return config

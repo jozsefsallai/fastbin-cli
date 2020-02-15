@@ -1,3 +1,4 @@
 {
-  "server": "https://your_fastbin_server"
+  "server": "https://your_fastbin_server",
+  "key": ""
 }
