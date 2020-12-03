@@ -18,7 +18,7 @@ type Config struct {
 }
 
 // GetConfig returns the configuration object from the user's home directory
-func GetConfig() Config {
+func GetConfigFunc() Config {
 	home, _ := homedir.Dir()
 	rcPath := path.Join(home, ".fastbinrc.json")
 

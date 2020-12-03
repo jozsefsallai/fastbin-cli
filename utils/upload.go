@@ -20,8 +20,8 @@ type RequestResponse struct {
 }
 
 // Upload will upload a file to the remote server.
-func Upload(input string) (string, error) {
-	conf := config.GetConfig()
+func UploadFunc(input string) (string, error) {
+	conf := config.GetConfigFunc()
 
 	url := conf.Server + "/documents"
 	payload := bytes.NewBuffer([]byte(input))
