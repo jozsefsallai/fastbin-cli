@@ -13,7 +13,7 @@ func main() {
 	app.Name = "fastbin"
 	app.Usage = "command line client for fastbin"
 	app.Version = "1.0.0"
-	app.Action = commands.CreateSnippet
+	app.Action = commands.CreateSnippetFunc
 	app.Flags = []cli.Flag{
 		cli.BoolFlag{
 			Name:  "full, f",

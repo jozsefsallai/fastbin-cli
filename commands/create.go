@@ -15,8 +15,8 @@ import (
 	"github.com/urfave/cli"
 )
 
-func printUrls(key string, mode string, extension string) {
-	conf := config.GetConfig()
+func printUrlsFunc(key string, mode string, extension string) {
+	conf := config.GetConfigFunc()
 
 	documentURL := fmt.Sprintf("%s/%s%s", conf.Server, key, extension)
 	rawURL := fmt.Sprintf("%s/raw/%s", conf.Server, key)
@@ -40,7 +40,7 @@ func printUrls(key string, mode string, extension string) {
 // CreateSnippet is the function that creates a snippet on the
 // remote server either from a file or from another command's
 // output
-func CreateSnippet(ctx *cli.Context) error {
+func CreateSnippetFunc(ctx *cli.Context) error {
 	mode := ""
 	isFull := ctx.Bool("full")
 	isRaw := ctx.Bool("raw")
@@ -82,12 +82,12 @@ func CreateSnippet(ctx *cli.Context) error {
 			panic(err)
 		}
 
-		result, err := utils.Upload(string(data))
+		result, err := utils.UploadFunc(string(data))
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		printUrls(result, mode, extension)
+		printUrlsFunc(result, mode, extension)
 
 		return nil
 	}
@@ -103,12 +103,12 @@ func CreateSnippet(ctx *cli.Context) error {
 		output = append(output, input)
 	}
 
-	result, err := utils.Upload(string(output))
+	result, err := utils.UploadFunc(string(output))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	printUrls(result, mode, "")
+	printUrlsFunc(result, mode, "")
 
 	return nil
 }
