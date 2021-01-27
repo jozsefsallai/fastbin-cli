@@ -14,13 +14,14 @@ import (
 // RequestResponse is the structure of a potential JSON response
 // coming from the server
 type RequestResponse struct {
-	Ok    bool   `json:"ok"`
-	Error string `json:"error"`
-	Key   string `json:"key"`
+	Ok     bool   `json:"ok"`
+	Error  string `json:"error"`
+	Key    string `json:"key"`
+	Secret string `json:"secret"`
 }
 
 // Upload will upload a file to the remote server.
-func Upload(input string) (string, error) {
+func Upload(input string) (string, string, error) {
 	conf := config.GetConfig()
 
 	url := conf.Server + "/documents"
@@ -33,12 +34,12 @@ func Upload(input string) (string, error) {
 	}
 
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	defer res.Body.Close()
@@ -50,11 +51,11 @@ func Upload(input string) (string, error) {
 
 	if jsonResponse.Ok == false {
 		if len(jsonResponse.Error) > 0 {
-			return "", errors.New(jsonResponse.Error)
+			return "", "", errors.New(jsonResponse.Error)
 		}
 
-		return "", errors.New("failed to upload the snippet")
+		return "", "", errors.New("failed to upload the snippet")
 	}
 
-	return string(jsonResponse.Key), nil
+	return string(jsonResponse.Key), string(jsonResponse.Secret), nil
 }

@@ -15,11 +15,15 @@ import (
 	"github.com/urfave/cli"
 )
 
-func printUrls(key string, mode string, extension string) {
+func printUrls(key string, secret string, mode string, extension string) {
 	conf := config.GetConfig()
 
 	documentURL := fmt.Sprintf("%s/%s%s", conf.Server, key, extension)
 	rawURL := fmt.Sprintf("%s/raw/%s", conf.Server, key)
+	deleteURL := ""
+	if len(secret) > 0 {
+		deleteURL = fmt.Sprintf("%s/delete/%s", conf.Server, secret)
+	}
 
 	switch mode {
 	case "full":
@@ -34,12 +38,12 @@ func printUrls(key string, mode string, extension string) {
 		fmt.Println("Snippet uploaded successfully!")
 		fmt.Println("URL:", documentURL)
 		fmt.Println("Raw:", rawURL)
+		fmt.Println("Delete:", deleteURL)
 	}
 }
 
-// CreateSnippet is the function that creates a snippet on the
-// remote server either from a file or from another command's
-// output
+// CreateSnippet is the function that creates a snippet on the remote server
+// either from a file or from another command's output
 func CreateSnippet(ctx *cli.Context) error {
 	mode := ""
 	isFull := ctx.Bool("full")
@@ -82,12 +86,12 @@ func CreateSnippet(ctx *cli.Context) error {
 			panic(err)
 		}
 
-		result, err := utils.Upload(string(data))
+		key, secret, err := utils.Upload(string(data))
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		printUrls(result, mode, extension)
+		printUrls(key, secret, mode, extension)
 
 		return nil
 	}
@@ -103,12 +107,12 @@ func CreateSnippet(ctx *cli.Context) error {
 		output = append(output, input)
 	}
 
-	result, err := utils.Upload(string(output))
+	key, secret, err := utils.Upload(string(output))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	printUrls(result, mode, "")
+	printUrls(key, secret, mode, "")
 
 	return nil
 }

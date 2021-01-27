@@ -2,7 +2,6 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -23,8 +22,9 @@ func GetConfig() Config {
 	rcPath := path.Join(home, ".fastbinrc.json")
 
 	if _, err := os.Stat(rcPath); os.IsNotExist(err) {
-		fmt.Println("Configuration file not found. Please create a .fastbinrc.json file in your home directory.")
-		os.Exit(1)
+		return Config{
+			Server: "https://fastbin.xyz",
+		}
 	}
 
 	rc, err := os.Open(rcPath)
